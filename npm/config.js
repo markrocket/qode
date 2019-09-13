@@ -20,12 +20,12 @@ const executableNames = {
 
 const appDirectories = envPaths("qode");
 const qodeArchiveName = `qode-v${libVersion}.zip`;
-const localBinaryDir = path.resolve(__dirname, "dist", libVersion);
-const localArchivePath = path.resolve(localBinaryDir, qodeArchiveName);
-const localBinaryPath =
+const localQtHome = path.resolve(__dirname, "dist", libVersion);
+const localQodeArchivePath = path.resolve(localQtHome, qodeArchiveName);
+const localQodePath =
   platform === "win32"
-    ? path.resolve(localBinaryDir, "bin", executableNames[platform])
-    : path.resolve(localBinaryDir, executableNames[platform]);
+    ? path.resolve(localQtHome, "bin", executableNames[platform])
+    : path.resolve(localQtHome, executableNames[platform]);
 const cacheDir = appDirectories.cache;
 
 module.exports = {
@@ -33,7 +33,7 @@ module.exports = {
   libVersion,
   cacheDir,
   qodeArchiveName,
-  localBinaryDir,
-  localArchivePath,
-  localBinaryPath
+  localQtHome,
+  localQodeArchivePath,
+  localQodePath
 };

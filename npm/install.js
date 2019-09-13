@@ -9,9 +9,9 @@ const extract = require("extract-zip");
 const {
   libVersion,
   qodeArchiveName,
-  localBinaryDir,
-  localArchivePath,
-  localBinaryPath,
+  localQtHome,
+  localQodeArchivePath,
+  localQodePath,
   cacheDir
 } = require("./config");
 
@@ -24,15 +24,11 @@ const downloadLink = `https://github.com/nodegui/qode/releases/download/v${libVe
 
 //---------------------------
 
-const checkLocalBinary = async () => {
-  return await fs.pathExists(localBinaryPath);
-};
-
 const copyArchiveFromCache = async () => {
   console.log(
     `Local Qode ${libVersion} archive doesnt exists... Copying Qode from cache...`
   );
-  await fs.copy(cacheArchivePath, localArchivePath);
+  await fs.copy(cacheArchivePath, localQodeArchivePath);
 };
 
 const extractZip = async (source, targetDir) => {
@@ -75,16 +71,16 @@ const downloadArchiveFromGithub = async () => {
 
 const extractBinaries = async () => {
   console.log("Extracting binaries...");
-  await extractZip(localArchivePath, localBinaryDir);
+  await extractZip(localQodeArchivePath, localQtHome);
   if (process.platform !== "win32") {
-    await fs.chmod(localBinaryPath, fs.constants.S_IXUSR);
+    await fs.chmod(localQodePath, fs.constants.S_IXUSR);
   }
 };
 
 const setup = async () => {
-  await fs.mkdirp(localBinaryDir);
+  await fs.mkdirp(localQtHome);
   await fs.mkdirp(cacheDir);
-  const exists = await checkLocalBinary();
+  const exists = await fs.pathExists(localQodePath);
   if (exists) {
     return;
   }
